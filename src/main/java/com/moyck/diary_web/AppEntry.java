@@ -10,13 +10,29 @@ import javax.inject.Inject;
 
 public class AppEntry {
 
-    @PostAction("register/{name}")
-    public String test(String name){
-        return name;
-    }
 
     public static void main(String[] args) throws Exception {
         Act.start();
     }
 
 }
+
+/*
+User
+注册
+登陆
+改密码
+绑定邮箱
+
+Diary
+发布日记
+删除
+更新
+获取日记列表
+
+Notebook
+新建日记
+日记移动
+
+
+ */
