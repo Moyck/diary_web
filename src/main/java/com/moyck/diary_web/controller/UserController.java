@@ -3,7 +3,6 @@ package com.moyck.diary_web.controller;
 import act.Act;
 import act.controller.Controller;
 import act.db.ebean.EbeanDao;
-import act.db.jpa.*;
 import com.moyck.diary_web.domains.LoginRequest;
 import com.moyck.diary_web.domains.User;
 import io.ebean.DuplicateKeyException;

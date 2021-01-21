@@ -4,9 +4,11 @@ import act.controller.Controller;
 import act.db.ebean.EbeanDao;
 import com.moyck.diary_web.domains.Diary;
 import com.moyck.diary_web.domains.User;
+import org.osgl.mvc.annotation.DeleteAction;
 import org.osgl.mvc.annotation.PostAction;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,8 +30,27 @@ public class DiaryController extends Controller.Util{
     }
 
     @PostAction("/diary")
-    public Iterable<Diary> getDiary(int id) {
-        return dao.findBy("uid",id);
+    public Iterable<Diary> getDiary(long id, Date lastUpdateTime) {
+        if (lastUpdateTime == null || lastUpdateTime.getTime() == 0){
+            return dao.findBy("uid",id);
+        }
+//        dao.createQuery("Select * from diary");
+        return        dao.findBy().
+    }
+
+    @DeleteAction("/diary")
+    public String deleteDiary(long id) {
+        dao.deleteById(id);
+        return "suc";
+    }
+
+    @PostAction("/diary/update")
+    public String updateDiary(long id,String content,String images) {
+        Diary diary = dao.findById(id);
+        diary.content = content;
+        diary.images = images;
+        dao.save(diary);
+        return "suc";
     }
 
 
