@@ -4,17 +4,19 @@ import act.controller.Controller;
 import act.db.ebean.EbeanDao;
 import com.moyck.diary_web.domains.Diary;
 import com.moyck.diary_web.domains.User;
+import io.ebean.Expr;
 import org.osgl.mvc.annotation.DeleteAction;
 import org.osgl.mvc.annotation.PostAction;
 
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * id uid createTime content images mood
  */
-public class DiaryController extends Controller.Util{
+public class DiaryController extends Controller.Util {
 
     private EbeanDao<Long, Diary> dao;
 
@@ -31,11 +33,10 @@ public class DiaryController extends Controller.Util{
 
     @PostAction("/diary")
     public Iterable<Diary> getDiary(long id, Date lastUpdateTime) {
-        if (lastUpdateTime == null || lastUpdateTime.getTime() == 0){
-            return dao.findBy("uid",id);
+        if (lastUpdateTime == null || lastUpdateTime.getTime() == 0) {
+            return dao.findBy("uid", id);
         }
-//        dao.createQuery("Select * from diary");
-        return        dao.findBy().
+        return dao.q().where(Expr.ge("createTime", lastUpdateTime)).findList();
     }
 
     @DeleteAction("/diary")
@@ -45,7 +46,7 @@ public class DiaryController extends Controller.Util{
     }
 
     @PostAction("/diary/update")
-    public String updateDiary(long id,String content,String images) {
+    public String updateDiary(long id, String content, String images) {
         Diary diary = dao.findById(id);
         diary.content = content;
         diary.images = images;
