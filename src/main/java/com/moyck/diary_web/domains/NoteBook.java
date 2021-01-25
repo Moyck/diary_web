@@ -5,11 +5,10 @@ import act.util.SimpleBean;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "diary")
-public class Diary implements SimpleBean {
+@Table(name = "notebook")
+public class NoteBook implements SimpleBean {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +16,8 @@ public class Diary implements SimpleBean {
     @Column
     public long uid;
     @Column
-    public String content;
+    public String name;
     @Column
-    public String images;
-    @Column
-    public int mood;
-    @Column
-    public Date createTime;
-    @Column
-    public long nid;
+    public String avatar;
 
 }
