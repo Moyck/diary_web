@@ -6,6 +6,7 @@ import act.db.ebean.EbeanDao;
 import com.moyck.diary_web.domains.ErrorMessage;
 import com.moyck.diary_web.domains.LoginRequest;
 import com.moyck.diary_web.domains.User;
+import com.qiniu.util.Auth;
 import io.ebean.DuplicateKeyException;
 import org.osgl.mvc.annotation.GetAction;
 import org.osgl.mvc.annotation.PostAction;

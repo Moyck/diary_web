@@ -62,11 +62,11 @@ public class DiaryController extends Controller.Util {
 
     @Before()
     public void checkAuthentification(H.Request request) {
-
-            if (!userDao.findById(Long.parseLong(request.paramVal("uid"))).token.equals(request.cookie("token").value())){
-                throw renderJson(new ErrorMessage(5,"Token 过期"));
-            }
-
+        if(request.cookie("uid") == null || request.cookie("token") == null)
+            throw renderJson(new ErrorMessage(6, "缺少Token"));
+        if (!userDao.findById(Long.valueOf(request.cookie("uid").value())).token.equals(request.cookie("token").value())) {
+            throw renderJson(new ErrorMessage(5, "Token 过期"));
+        }
     }
 
 

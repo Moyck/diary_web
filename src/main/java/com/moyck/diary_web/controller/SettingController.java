@@ -2,48 +2,33 @@ package com.moyck.diary_web.controller;
 
 import act.controller.Controller;
 import act.db.ebean.EbeanDao;
+import com.moyck.diary_web.domains.Diary;
 import com.moyck.diary_web.domains.ErrorMessage;
 import com.moyck.diary_web.domains.NoteBook;
 import com.moyck.diary_web.domains.User;
+import com.moyck.diary_web.utils.QiniuUtil;
+import com.qiniu.util.Auth;
 import org.osgl.http.H;
 import org.osgl.mvc.annotation.Before;
 import org.osgl.mvc.annotation.GetAction;
 import org.osgl.mvc.annotation.PostAction;
+import org.osgl.mvc.result.Result;
 
 import javax.inject.Inject;
 
-/**
- * id uid createTime content images mood
- */
-public class NotebookController extends Controller.Util {
+public class SettingController extends Controller.Util {
 
-    private EbeanDao<Long, NoteBook> notebookDao;
     private EbeanDao<Long, User> userDao;
 
     @Inject
-    public NotebookController(EbeanDao<Long, NoteBook> notebookDao, EbeanDao<Long, User> userDao) {
-        this.notebookDao = notebookDao;
+    public SettingController(EbeanDao<Long, User> userDao) {
         this.userDao = userDao;
     }
 
-    @PostAction("/notebook/create")
-    public void create(NoteBook noteBook) {
-        notebookDao.save(noteBook);
+    @GetAction("/setting/getUploadToken")
+    public Result getUploadToken() {
+        return  renderText(QiniuUtil.getInstance().getUploadToken());
     }
-
-    @GetAction("/notebooks")
-    public Iterable<NoteBook> getAllNoteBooks(long uid) {
-        return notebookDao.findBy("uid", uid);
-    }
-
-    @PostAction("/notebook/update")
-    public void update(NoteBook noteBook) {
-        NoteBook book = notebookDao.findById(noteBook.id);
-        book.avatar = noteBook.avatar;
-        book.name = noteBook.name;
-        notebookDao.save(book);
-    }
-
 
     @Before()
     public void checkAuthentification(H.Request request) {
@@ -53,5 +38,6 @@ public class NotebookController extends Controller.Util {
             throw renderJson(new ErrorMessage(5, "Token 过期"));
         }
     }
+
 
 }
